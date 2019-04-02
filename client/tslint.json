@@ -14,7 +14,8 @@
     "jsx-no-lambda": false,
     "member-ordering": false,
     "strict-boolean-expressions": true,
-    "no-parameter-reassignment": true
+    "no-parameter-reassignment": true,
+    "jsx-boolean-value": false
   },
   "rulesDirectory": []
 }
