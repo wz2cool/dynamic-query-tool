@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Route, HashRouter, Link } from "react-router-dom";
-import Home from "../module/dashboard/Home";
+import Home from "../route/dashboard/Home";
 
-const About = React.lazy(() => import("../module/dashboard/About"));
-const Readme = React.lazy(() => import("../module/dashboard/Readme"));
+const About = React.lazy(() => import("../route/dashboard/About"));
+const Readme = React.lazy(() => import("../route/dashboard/Readme"));
 
 export class AppRouter extends React.PureComponent {
   public render() {
