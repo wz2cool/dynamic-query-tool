@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 import { Layout, Menu, Icon } from "antd";
 
@@ -50,8 +51,12 @@ export class NavBar extends React.PureComponent<INavBarProps, INavBarState> {
               </span>
             }
           >
-            <Menu.Item key="3">Tom</Menu.Item>
-            <Menu.Item key="4">Bill</Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/about">about</Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to="/readme">readme</Link>
+            </Menu.Item>
             <Menu.Item key="5">Alex</Menu.Item>
           </SubMenu>
           <SubMenu
