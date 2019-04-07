@@ -5,6 +5,7 @@
     "no-unused-expression": true
   },
   "rules": {
+    "no-console": false,
     "member-access": [false],
     "ordered-imports": [false],
     "max-line-length": [true, 150],
@@ -13,7 +14,8 @@
     "arrow-parens": false,
     "object-literal-sort-keys": false,
     "strict-boolean-expressions": true,
-    "no-parameter-reassignment": true
+    "no-parameter-reassignment": true,
+    "trailing-comma": false
   },
   "rulesDirectory": []
 }
