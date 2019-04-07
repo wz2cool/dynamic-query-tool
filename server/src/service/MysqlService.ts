@@ -1,16 +1,10 @@
+import * as _ from "lodash";
+
 import { Injectable } from "@nestjs/common";
 import { ObjectUtils } from "ts-commons";
-import {
-  MysqlConnectionConfig,
-  ConnectionFactory,
-  FilterDescriptor,
-  FilterOperator,
-  DynamicQuery,
-  DatabaseType,
-} from "tsbatis";
+import { MysqlConnectionConfig, ConnectionFactory, FilterOperator, DynamicQuery, DatabaseType } from "tsbatis";
 import { MysqlTableInfoMapper } from "src/mapper/MysqlTableInfoMapper";
 import { MysqlTableInfoDO } from "src/model/entity/table/MysqlTableInfoDO";
-import _ = require("lodash");
 import { ColumnInfoDO } from "src/model/entity/view/ColumInfoDO";
 import { CompressHelper } from "src/util/compress/CompressHelper";
 import { TextFileInfo } from "src/util/compress/model/TextFileInfo";
