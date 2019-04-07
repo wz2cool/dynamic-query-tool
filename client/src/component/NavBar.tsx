@@ -34,20 +34,12 @@ export class NavBar extends React.PureComponent<INavBarProps, INavBarState> {
       >
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1">
-            <Icon type="pie-chart" />
-            <span>Option 1</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Icon type="desktop" />
-            <span>Option 2</span>
-          </Menu.Item>
           <SubMenu
             key="sub1"
             title={
               <span>
-                <Icon type="user" />
-                <span>User</span>
+                <Icon type="database" />
+                <span>Dynamic Query</span>
               </span>
             }
           >
@@ -59,6 +51,17 @@ export class NavBar extends React.PureComponent<INavBarProps, INavBarState> {
             </Menu.Item>
             <Menu.Item key="5">Alex</Menu.Item>
           </SubMenu>
+
+          <Menu.Item key="1">
+            <Icon type="database" />
+            <span>动态查询</span>
+          </Menu.Item>
+          
+          <Menu.Item key="2">
+            <Icon type="desktop" />
+            <span>Option 2</span>
+          </Menu.Item>
+        
           <SubMenu
             key="sub2"
             title={
