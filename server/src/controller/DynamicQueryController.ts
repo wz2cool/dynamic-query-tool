@@ -4,6 +4,7 @@ import { Controller, Body, Post, Res } from "@nestjs/common";
 import { ApiUseTags } from "@nestjs/swagger";
 import { GenerateFileRequestDTO } from "../model/dto/request/GenerateFileRequestDTO";
 import { MysqlService } from "src/service/MysqlService";
+import { Response } from "express";
 
 @ApiUseTags("DynamicQueryController")
 @Controller("dynamicQuery")
@@ -15,7 +16,7 @@ export class DynamicQueryController {
   }
 
   @Post("/java/file")
-  public async generateFile(@Body() requestDTO: GenerateFileRequestDTO, @Res() res: any) {
+  public async generateFile(@Body() requestDTO: GenerateFileRequestDTO, @Res() res: Response) {
     const uri = requestDTO.uri;
     const user = requestDTO.user;
     const pwd = requestDTO.pwd;

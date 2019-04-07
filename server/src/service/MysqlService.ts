@@ -94,8 +94,9 @@ export class MysqlService {
     tableNames: string[]
   ): Promise<string> {
     try {
-      const textFileInfos = await this.generateTableEntities(uri, user, pwd, database, tableNames);
-      const dtoFileInfos = await this.generateTableDTOs(uri, user, pwd, database, tableNames);
+      const columInfoMap = await this.getColumnInfoMap(uri, user, pwd, database, tableNames);
+      const textFileInfos = await this.generateTableEntities(columInfoMap);
+      const dtoFileInfos = await this.generateTableDTOs(columInfoMap);
       const zipFile = await CompressHelper.compressTextFile(textFileInfos.concat(dtoFileInfos));
       return new Promise<string>((resolve, reject) => resolve(zipFile));
     } catch (e) {
@@ -103,55 +104,44 @@ export class MysqlService {
     }
   }
 
-  public async generateTableEntities(
-    uri: string,
-    user: string,
-    pwd: string,
-    database: string,
-    tableNames: string[]
-  ): Promise<TextFileInfo[]> {
+  public async generateTableEntities(map: Map<string, ColumnInfoDO[]>): Promise<TextFileInfo[]> {
     try {
       const result: TextFileInfo[] = [];
-      for (const tableName of tableNames) {
-        const textFileInfo = await this.generateTableEntity(uri, user, pwd, database, tableName);
-        result.push(textFileInfo);
+      for (const tableName of map.keys()) {
+        const columnInfos = map.get(tableName);
+        if (ObjectUtils.hasValue(columnInfos)) {
+          const textFileInfo = await this.generateTableEntity(tableName, columnInfos);
+          result.push(textFileInfo);
+        }
       }
+
       return new Promise<TextFileInfo[]>((resolve, reject) => resolve(result));
     } catch (e) {
       return new Promise<TextFileInfo[]>((resolve, reject) => reject(e));
     }
   }
 
-  public async generateTableDTOs(
-    uri: string,
-    user: string,
-    pwd: string,
-    database: string,
-    tableNames: string[]
-  ): Promise<TextFileInfo[]> {
+  public async generateTableDTOs(map: Map<string, ColumnInfoDO[]>): Promise<TextFileInfo[]> {
     try {
       const result: TextFileInfo[] = [];
-      for (const tableName of tableNames) {
-        const textFileInfo = await this.generateTableDTO(uri, user, pwd, database, tableName);
-        result.push(textFileInfo);
+      for (const tableName of map.keys()) {
+        const columnInfos = map.get(tableName);
+        if (ObjectUtils.hasValue(columnInfos)) {
+          const textFileInfo = await this.generateTableDTO(tableName, columnInfos);
+          result.push(textFileInfo);
+        }
       }
+
       return new Promise<TextFileInfo[]>((resolve, reject) => resolve(result));
     } catch (e) {
       return new Promise<TextFileInfo[]>((resolve, reject) => reject(e));
     }
   }
 
-  private async generateTableEntity(
-    uri: string,
-    user: string,
-    pwd: string,
-    database: string,
-    tableName: string
-  ): Promise<TextFileInfo> {
+  private async generateTableEntity(tableName: string, columnInfos: ColumnInfoDO[]): Promise<TextFileInfo> {
     try {
-      const dbColumInfos = await this.getColumnInfos(uri, user, pwd, database, tableName);
       const javaEntityFileGenerator = new JavaEntityFileGenerator(DatabaseType.MYSQL);
-      const content = javaEntityFileGenerator.generateFileString(tableName, dbColumInfos);
+      const content = javaEntityFileGenerator.generateFileString(tableName, columnInfos);
       const textFileInfo = new TextFileInfo();
       textFileInfo.fileName = `${_.upperFirst(_.camelCase(tableName))}DO.java`;
       textFileInfo.content = content;
@@ -161,23 +151,35 @@ export class MysqlService {
     }
   }
 
-  private async generateTableDTO(
-    uri: string,
-    user: string,
-    pwd: string,
-    database: string,
-    tableName: string
-  ): Promise<TextFileInfo> {
+  private async generateTableDTO(tableName: string, columnInfos: ColumnInfoDO[]): Promise<TextFileInfo> {
     try {
-      const dbColumInfos = await this.getColumnInfos(uri, user, pwd, database, tableName);
       const javaDTOFileGenerator = new JavaDTOFileGenerator(DatabaseType.MYSQL);
-      const content = javaDTOFileGenerator.generateFileString(tableName, dbColumInfos);
+      const content = javaDTOFileGenerator.generateFileString(tableName, columnInfos);
       const textFileInfo = new TextFileInfo();
       textFileInfo.fileName = `${_.upperFirst(_.camelCase(tableName))}DTO.java`;
       textFileInfo.content = content;
       return new Promise<TextFileInfo>((resolve, reject) => resolve(textFileInfo));
     } catch (e) {
       return new Promise<TextFileInfo>((resolve, reject) => reject(e));
+    }
+  }
+
+  private async getColumnInfoMap(
+    uri: string,
+    user: string,
+    pwd: string,
+    database: string,
+    tableNames: string[]
+  ): Promise<Map<string, ColumnInfoDO[]>> {
+    try {
+      const result = new Map<string, ColumnInfoDO[]>();
+      for (const tableName of tableNames) {
+        const columnInfos = await this.getColumnInfos(uri, user, pwd, database, tableName);
+        result.set(tableName, columnInfos);
+      }
+      return new Promise<Map<string, ColumnInfoDO[]>>(resolve => resolve(result));
+    } catch (ex) {
+      return new Promise<Map<string, ColumnInfoDO[]>>((resolve, reject) => reject(ex));
     }
   }
 
