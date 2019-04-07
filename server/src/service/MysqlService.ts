@@ -9,6 +9,7 @@ import { ColumnInfoDO } from "src/model/entity/view/ColumInfoDO";
 import { CompressHelper } from "src/util/compress/CompressHelper";
 import { TextFileInfo } from "src/util/compress/model/TextFileInfo";
 import { JavaEntityFileGenerator } from "src/util/dynamic/fileGenerator/JavaEntityFileGenerator";
+import { JavaDTOFileGenerator } from "src/util/dynamic/fileGenerator/JavaDTOFileGenerator";
 
 @Injectable()
 export class MysqlService {
@@ -85,7 +86,7 @@ export class MysqlService {
     }
   }
 
-  public async generateTableEntitiesZipFile(
+  public async generateTableZipFile(
     uri: string,
     user: string,
     pwd: string,
@@ -94,7 +95,8 @@ export class MysqlService {
   ): Promise<string> {
     try {
       const textFileInfos = await this.generateTableEntities(uri, user, pwd, database, tableNames);
-      const zipFile = await CompressHelper.compressTextFile(textFileInfos);
+      const dtoFileInfos = await this.generateTableDTOs(uri, user, pwd, database, tableNames);
+      const zipFile = await CompressHelper.compressTextFile(textFileInfos.concat(dtoFileInfos));
       return new Promise<string>((resolve, reject) => resolve(zipFile));
     } catch (e) {
       return new Promise<string>((resolve, reject) => reject(e));
@@ -120,7 +122,26 @@ export class MysqlService {
     }
   }
 
-  public async generateTableEntity(
+  public async generateTableDTOs(
+    uri: string,
+    user: string,
+    pwd: string,
+    database: string,
+    tableNames: string[]
+  ): Promise<TextFileInfo[]> {
+    try {
+      const result: TextFileInfo[] = [];
+      for (const tableName of tableNames) {
+        const textFileInfo = await this.generateTableDTO(uri, user, pwd, database, tableName);
+        result.push(textFileInfo);
+      }
+      return new Promise<TextFileInfo[]>((resolve, reject) => resolve(result));
+    } catch (e) {
+      return new Promise<TextFileInfo[]>((resolve, reject) => reject(e));
+    }
+  }
+
+  private async generateTableEntity(
     uri: string,
     user: string,
     pwd: string,
@@ -133,6 +154,26 @@ export class MysqlService {
       const content = javaEntityFileGenerator.generateFileString(tableName, dbColumInfos);
       const textFileInfo = new TextFileInfo();
       textFileInfo.fileName = `${_.upperFirst(_.camelCase(tableName))}DO.java`;
+      textFileInfo.content = content;
+      return new Promise<TextFileInfo>((resolve, reject) => resolve(textFileInfo));
+    } catch (e) {
+      return new Promise<TextFileInfo>((resolve, reject) => reject(e));
+    }
+  }
+
+  private async generateTableDTO(
+    uri: string,
+    user: string,
+    pwd: string,
+    database: string,
+    tableName: string
+  ): Promise<TextFileInfo> {
+    try {
+      const dbColumInfos = await this.getColumnInfos(uri, user, pwd, database, tableName);
+      const javaDTOFileGenerator = new JavaDTOFileGenerator(DatabaseType.MYSQL);
+      const content = javaDTOFileGenerator.generateFileString(tableName, dbColumInfos);
+      const textFileInfo = new TextFileInfo();
+      textFileInfo.fileName = `${_.upperFirst(_.camelCase(tableName))}DTO.java`;
       textFileInfo.content = content;
       return new Promise<TextFileInfo>((resolve, reject) => resolve(textFileInfo));
     } catch (e) {

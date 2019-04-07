@@ -21,7 +21,7 @@ export class DynamicQueryController {
     const pwd = requestDTO.pwd;
     const database = requestDTO.database;
     const tableNames = requestDTO.tableNames;
-    const filePath = await this.mysqlService.generateTableEntitiesZipFile(uri, user, pwd, database, tableNames);
+    const filePath = await this.mysqlService.generateTableZipFile(uri, user, pwd, database, tableNames);
     res.download(filePath, path.basename(filePath));
   }
 }

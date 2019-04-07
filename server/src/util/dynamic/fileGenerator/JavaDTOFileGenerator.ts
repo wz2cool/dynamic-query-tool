@@ -42,9 +42,6 @@ export class JavaDTOFileGenerator extends FileGeneratorBase {
       if (StringUtils.isNotBlank(columnInfo.comment)) {
         result += `${space}@ApiModelProperty("${columnInfo.comment}")\r\n`;
       }
-      if (columnInfo.pk === 1) {
-        result += `${space}@Id\r\n`;
-      }
       result += `${space}private ${javaType} ${javaProperty};\r\n`;
     }
     return result;
