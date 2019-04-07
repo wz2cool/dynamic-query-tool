@@ -1,19 +1,18 @@
-import * as _ from "lodash";
+import _ = require("lodash");
 
 import { FileGeneratorBase } from "./FileGeneratorBase";
 import { IColumnInfo } from "../model/interface/IColumnInfo";
 import { DatabaseType } from "tsbatis";
-
-import { StringUtils, ArrayUtils } from "ts-commons";
 import { JavaType } from "../model/constant/JavaType";
+import { ArrayUtils, StringUtils } from "ts-commons";
 
-export class JavaEntityFileGenerator extends FileGeneratorBase {
+export class JavaDTOFileGenerator extends FileGeneratorBase {
   constructor(databaseType: DatabaseType) {
     super(databaseType);
   }
 
   public generateFileString(tableName: string, columnInfos: IColumnInfo[]): string {
-    const className = `${_.upperFirst(_.camelCase(tableName.toLowerCase()))}DO`;
+    const className = `${_.upperFirst(_.camelCase(tableName.toLowerCase()))}DTO`;
     const privateFiledText = this.generatePrivateFieldText(columnInfos);
     const publicMothodText = this.genreatePublicMethodText(columnInfos);
     const allJavaTypes = columnInfos.map(x => this.typeConverter.convert(x.type));
@@ -29,8 +28,7 @@ export class JavaEntityFileGenerator extends FileGeneratorBase {
       result += "import java.sql.*;\r\n";
     }
     result +=
-      `import javax.persistence.*;\r\n\r\n` +
-      `@Table(name = "${tableName}")\r\n` +
+      `import io.swagger.annotations.*;\r\n\r\n` +
       `public class ${className} {\r\n${privateFiledText}\r\n${publicMothodText}}`;
     return result;
   }
@@ -42,7 +40,7 @@ export class JavaEntityFileGenerator extends FileGeneratorBase {
       const javaType = this.typeConverter.convert(columnInfo.type);
       const javaProperty = _.camelCase(columnInfo.name.toLowerCase());
       if (StringUtils.isNotBlank(columnInfo.comment)) {
-        result += `${space}// ${columnInfo.comment}\r\n`;
+        result += `${space}@ApiModelProperty("${columnInfo.comment}")\r\n`;
       }
       if (columnInfo.pk === 1) {
         result += `${space}@Id\r\n`;

@@ -55,11 +55,11 @@ export class MysqlService {
     tableName: string
   ): Promise<ColumnInfoDO[]> {
     try {
-      await this.checkParamEmpty("uri", uri);
-      await this.checkParamEmpty("user", user);
-      await this.checkParamEmpty("pwd", pwd);
-      await this.checkParamEmpty("database", database);
-      await this.checkParamEmpty("tableName", tableName);
+      this.checkParamEmpty("uri", uri);
+      this.checkParamEmpty("user", user);
+      this.checkParamEmpty("pwd", pwd);
+      this.checkParamEmpty("database", database);
+      this.checkParamEmpty("tableName", tableName);
       const uriInfos = uri.split(":");
       const host = uriInfos[0];
       const port = uriInfos[1];
@@ -132,7 +132,7 @@ export class MysqlService {
       const javaEntityFileGenerator = new JavaEntityFileGenerator(DatabaseType.MYSQL);
       const content = javaEntityFileGenerator.generateFileString(tableName, dbColumInfos);
       const textFileInfo = new TextFileInfo();
-      textFileInfo.fileName = _.upperFirst(_.camelCase(tableName)) + ".java";
+      textFileInfo.fileName = `${_.upperFirst(_.camelCase(tableName))}DO.java`;
       textFileInfo.content = content;
       return new Promise<TextFileInfo>((resolve, reject) => resolve(textFileInfo));
     } catch (e) {
