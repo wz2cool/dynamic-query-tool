@@ -44,7 +44,7 @@ export class NavBar extends React.PureComponent<INavBarProps, INavBarState> {
             }
           >
             <Menu.Item key="3">
-              <Link to="/about">about</Link>
+              <Link to="/dynamicQuery/fileGenerator">File Generator</Link>
             </Menu.Item>
             <Menu.Item key="4">
               <Link to="/readme">readme</Link>
@@ -52,11 +52,6 @@ export class NavBar extends React.PureComponent<INavBarProps, INavBarState> {
             <Menu.Item key="5">Alex</Menu.Item>
           </SubMenu>
 
-          <Menu.Item key="1">
-            <Icon type="database" />
-            <span>动态查询</span>
-          </Menu.Item>
-          
           <Menu.Item key="2">
             <Icon type="desktop" />
             <span>Option 2</span>

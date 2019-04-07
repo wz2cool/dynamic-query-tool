@@ -7,6 +7,8 @@ import { NavBar } from "./NavBar";
 const About = React.lazy(() => import("../route/dashboard/About"));
 const Readme = React.lazy(() => import("../route/dashboard/Readme"));
 
+const fileGenerator = React.lazy(()=> import("../route/dynamicQuery/fileGenerator"));
+
 export class AppRouter extends React.PureComponent {
   public render() {
     return (
@@ -24,6 +26,7 @@ export class AppRouter extends React.PureComponent {
                 <Route path="/" component={Home} />
                 <Route path="/about" component={About} />
                 <Route path="/readme" component={Readme} />
+                <Route path="/dynamicQuery/fileGenerator" component={fileGenerator} />
               </React.Suspense>
             </Layout.Content>
             <Layout.Footer style={{ textAlign: "center" }}>
