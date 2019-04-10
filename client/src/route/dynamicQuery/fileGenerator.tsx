@@ -1,4 +1,5 @@
 import * as React from "react";
+import { StringUtils } from "ts-commons";
 import { Form, Input } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 
@@ -10,9 +11,17 @@ class FileGenerator extends React.Component<
   FileGeneratorProps,
   FileGeneratorState
 > {
-  private validateIPAddress = (rule: any, value: any, callback: any): void => {
-    console.log(`value: ${value}`);
-    callback();
+  public validateIPAddress = (rule: any, value: any, callback: any): void => {
+    if (StringUtils.isBlank(value)) {
+      callback();
+    } else {
+      const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+      if (regex.test(value)) {
+        callback();
+      } else {
+        callback(`"IP Address" is invalid`);
+      }
+    }
   };
 
   public render() {
@@ -48,9 +57,6 @@ class FileGenerator extends React.Component<
               {
                 required: true,
                 message: `"Port" is required!`
-              },
-              {
-                validator: this.validateIPAddress
               }
             ]
           })(<Input type="number" />)}
@@ -61,9 +67,6 @@ class FileGenerator extends React.Component<
               {
                 required: true,
                 message: `"User" is required!`
-              },
-              {
-                validator: this.validateIPAddress
               }
             ]
           })(<Input />)}
@@ -73,10 +76,7 @@ class FileGenerator extends React.Component<
             rules: [
               {
                 required: true,
-                message: "Please input your password!"
-              },
-              {
-                validator: this.validateIPAddress
+                message: `"Password" is required`
               }
             ]
           })(<Input type="password" />)}
