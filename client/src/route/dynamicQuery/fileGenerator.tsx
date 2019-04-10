@@ -11,6 +11,7 @@ class FileGenerator extends React.Component<
   FileGeneratorState
 > {
   private validateIPAddress = (rule: any, value: any, callback: any): void => {
+    console.log(`value: ${value}`);
     callback();
   };
 
@@ -52,7 +53,7 @@ class FileGenerator extends React.Component<
                 validator: this.validateIPAddress
               }
             ]
-          })(<Input />)}
+          })(<Input type="number" />)}
         </Form.Item>
         <Form.Item label="User">
           {getFieldDecorator("user", {

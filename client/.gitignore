@@ -63,6 +63,4 @@ typings/
 dist
 build
 
-package-lock.json
-
 .sonarlint
