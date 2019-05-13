@@ -4,7 +4,7 @@ import { FileGeneratorBase } from "./FileGeneratorBase";
 import { IColumnInfo } from "../model/interface/IColumnInfo";
 import { DatabaseType } from "tsbatis";
 
-import { StringUtils, ArrayUtils } from "ts-commons";
+import { StringUtils, ArrayUtils, ObjectUtils } from "ts-commons";
 import { JavaType } from "../model/constant/JavaType";
 
 export class JavaEntityFileGenerator extends FileGeneratorBase {
@@ -41,8 +41,8 @@ export class JavaEntityFileGenerator extends FileGeneratorBase {
     for (const columnInfo of columnInfos) {
       const javaType = this.typeConverter.convert(columnInfo.type);
       const javaProperty = _.camelCase(columnInfo.name.toLowerCase());
-      if (StringUtils.isNotBlank(columnInfo.comment)) {
-        result += `${space}// ${columnInfo.comment}\r\n`;
+      if (StringUtils.isNotBlank(columnInfo.comment) && ObjectUtils.hasValue(columnInfo.comment)) {
+        result += `${space}/**\r\n${space} * ${StringUtils.trim(columnInfo.comment)}\r\n ${space}*/\r\n`;
       }
       if (columnInfo.pk === 1) {
         result += `${space}@Id\r\n`;
