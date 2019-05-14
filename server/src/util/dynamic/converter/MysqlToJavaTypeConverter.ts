@@ -10,10 +10,10 @@ export class MysqlToJavaTypeConverter implements ITypeConverter {
     }
 
     switch (mysqlType.toUpperCase()) {
-      case MySqlType.BIT:
       case MySqlType.BOOL:
       case MySqlType.BOOLEAN:
         return JavaType.BOOLEAN;
+      case MySqlType.BIT:
       case MySqlType.TINYINT:
       case MySqlType.SMALLINT:
       case MySqlType.MEDIUMINT:
