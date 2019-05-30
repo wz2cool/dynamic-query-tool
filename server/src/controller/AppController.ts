@@ -1,7 +1,7 @@
 import { Controller, Get } from "@nestjs/common";
 import { AppService } from "../service/AppService";
 import { ApiUseTags, ApiResponse } from "@nestjs/swagger";
-import { UserDTO } from "src/model/dto/response/UserDTO";
+import { UserDTO } from "../model/dto/response/UserDTO";
 
 @ApiUseTags("AppController")
 @Controller()

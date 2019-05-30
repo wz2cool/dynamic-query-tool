@@ -3,13 +3,13 @@ import * as _ from "lodash";
 import { Injectable } from "@nestjs/common";
 import { ObjectUtils } from "ts-commons";
 import { MysqlConnectionConfig, ConnectionFactory, FilterOperator, DynamicQuery, DatabaseType } from "tsbatis";
-import { MysqlTableInfoMapper } from "src/mapper/MysqlTableInfoMapper";
-import { MysqlTableInfoDO } from "src/model/entity/table/MysqlTableInfoDO";
-import { ColumnInfoDO } from "src/model/entity/view/ColumInfoDO";
-import { CompressHelper } from "src/util/compress/CompressHelper";
-import { TextFileInfo } from "src/util/compress/model/TextFileInfo";
-import { JavaEntityFileGenerator } from "src/util/dynamic/fileGenerator/JavaEntityFileGenerator";
-import { JavaDTOFileGenerator } from "src/util/dynamic/fileGenerator/JavaDTOFileGenerator";
+import { MysqlTableInfoMapper } from "../mapper/MysqlTableInfoMapper";
+import { MysqlTableInfoDO } from "../model/entity/table/MysqlTableInfoDO";
+import { ColumnInfoDO } from "../model/entity/view/ColumInfoDO";
+import { CompressHelper } from "../util/compress/CompressHelper";
+import { TextFileInfo } from "../util/compress/model/TextFileInfo";
+import { JavaEntityFileGenerator } from "../util/dynamic/fileGenerator/JavaEntityFileGenerator";
+import { JavaDTOFileGenerator } from "../util/dynamic/fileGenerator/JavaDTOFileGenerator";
 
 @Injectable()
 export class MysqlService {
