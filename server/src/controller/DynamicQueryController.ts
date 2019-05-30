@@ -3,7 +3,7 @@ import * as path from "path";
 import { Controller, Body, Post, Res } from "@nestjs/common";
 import { ApiUseTags } from "@nestjs/swagger";
 import { GenerateFileRequestDTO } from "../model/dto/request/GenerateFileRequestDTO";
-import { MysqlService } from "src/service/MysqlService";
+import { MysqlService } from "../service/MysqlService";
 import { Response } from "express";
 
 @ApiUseTags("DynamicQueryController")
