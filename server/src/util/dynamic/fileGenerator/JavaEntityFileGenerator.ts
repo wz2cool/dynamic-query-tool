@@ -47,6 +47,7 @@ export class JavaEntityFileGenerator extends FileGeneratorBase {
       if (columnInfo.pk === 1) {
         result += `${space}@Id\r\n`;
       }
+      result += `${space}@Column\r\n`;
       result += `${space}private ${javaType} ${javaProperty};\r\n`;
     }
     return result;
