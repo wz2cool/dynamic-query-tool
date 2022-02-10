@@ -3,4 +3,5 @@ export interface IColumnInfo {
   type: string;
   pk: number;
   comment?: string;
+  is_unsigned: number;
 }

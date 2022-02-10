@@ -11,4 +11,6 @@ export class ColumnInfoDO extends Entity {
   public autoIncrement: number;
   @column({ columnName: "column_comment" })
   public comment: string;
+  @column({ columnName: "is_unsigned" })
+  public isUnsigned: number
 }

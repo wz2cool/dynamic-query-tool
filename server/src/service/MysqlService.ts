@@ -73,7 +73,7 @@ export class MysqlService {
       config.database = database;
 
       const sql =
-        `SELECT COLUMN_NAME AS name, DATA_TYPE AS type, column_comment AS comment,` +
+        `SELECT COLUMN_NAME AS name, DATA_TYPE AS type, column_comment AS comment, IF(COLUMN_TYPE LIKE '%unsigned', 1, 0) AS is_unsigned, ` +
         `(CASE WHEN COLUMN_KEY = 'PRI' THEN 1 ELSE 0 END) AS pk, ` +
         `(CASE WHEN extra = 'auto_increment' THEN 1 ELSE 0 END) as auto_increment ` +
         `FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '${database}' AND TABLE_NAME = '${tableName}'`;
