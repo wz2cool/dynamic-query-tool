@@ -28,7 +28,11 @@ export class ProtoFileGenerator extends FileGeneratorBase {
     for (let i = 0; i < columnInfos.length; i++) {
 
       const columnInfo = columnInfos[i];
-      const protoType = (columnInfo.is_unsigned == 1 ? "u" : "") + this.typeConverter.convert(columnInfo.type);
+      let needUnsgined = false;
+      if (columnInfo.is_unsigned == 1 || StringUtils.containsIgnoreCase(columnInfo.type, "date") || StringUtils.containsIgnoreCase(columnInfo.type, "time")) {
+        needUnsgined = true;
+      }
+      const protoType = (needUnsgined ? "u" : "") + this.typeConverter.convert(columnInfo.type);
       const protoProperty = columnInfo.name;
       if (StringUtils.isNotBlank(columnInfo.comment) && ObjectUtils.hasValue(columnInfo.comment)) {
         result += `${space}/**\r\n${space} * ${StringUtils.trim(columnInfo.comment)}\r\n ${space}*/\r\n`;
