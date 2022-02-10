@@ -10,7 +10,7 @@ import { CompressHelper } from "../util/compress/CompressHelper";
 import { TextFileInfo } from "../util/compress/model/TextFileInfo";
 import { JavaEntityFileGenerator } from "../util/dynamic/fileGenerator/JavaEntityFileGenerator";
 import { JavaDTOFileGenerator } from "../util/dynamic/fileGenerator/JavaDTOFileGenerator";
-import { ProtoFileGenerator } from "src/util/dynamic/fileGenerator/ProtoFileGenerator";
+import { ProtoFileGenerator } from "../util/dynamic/fileGenerator/ProtoFileGenerator";
 
 @Injectable()
 export class MysqlService {
