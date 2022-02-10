@@ -16,13 +16,24 @@ export class DynamicQueryController {
   }
 
   @Post("/java/file")
-  public async generateFile(@Body() requestDTO: GenerateFileRequestDTO, @Res() res: Response) {
+  public async generateJavaFile(@Body() requestDTO: GenerateFileRequestDTO, @Res() res: Response) {
     const uri = requestDTO.uri;
     const user = requestDTO.user;
     const pwd = requestDTO.pwd;
     const database = requestDTO.database;
     const tableNames = requestDTO.tableNames;
-    const filePath = await this.mysqlService.generateTableZipFile(uri, user, pwd, database, tableNames);
+    const filePath = await this.mysqlService.generateJavaTableZipFile(uri, user, pwd, database, tableNames);
+    res.download(filePath, path.basename(filePath));
+  }
+
+  @Post("/proto/file")
+  public async generateProtoFile(@Body() requestDTO: GenerateFileRequestDTO, @Res() res: Response) {
+    const uri = requestDTO.uri;
+    const user = requestDTO.user;
+    const pwd = requestDTO.pwd;
+    const database = requestDTO.database;
+    const tableNames = requestDTO.tableNames;
+    const filePath = await this.mysqlService.generateProtoTableZipFile(uri, user, pwd, database, tableNames);
     res.download(filePath, path.basename(filePath));
   }
 }

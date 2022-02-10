@@ -7,7 +7,7 @@ import { MysqlToJavaTypeConverter } from "../converter/MysqlToJavaTypeConverter"
 
 export abstract class FileGeneratorBase {
   public readonly databaseType: DatabaseType;
-  public readonly typeConverter: ITypeConverter;
+  public typeConverter: ITypeConverter;
   constructor(databaseType: DatabaseType) {
     this.databaseType = databaseType;
 
